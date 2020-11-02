@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Về Trường Manager</string>
+    <string name="login">L O G I N</string>
+    <string name="password">Password</string>
+    <string name="qr_confirm">QR Confirm</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="qr_checkin1">QR Check-in 1</string>
+    <string name="qr_checkin2">QR Check-in 2</string>
+</resources>

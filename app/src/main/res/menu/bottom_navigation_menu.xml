@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/qr_confirm"
+        android:icon="@drawable/ic_qr_white"
+        android:title="@string/qr_confirm" />
+
+    <item
+        android:id="@+id/qr_checkin1"
+        android:icon="@drawable/ic_qr_white"
+        android:title="@string/qr_checkin1" />
+
+    <item
+        android:id="@+id/qr_checkin2"
+        android:icon="@drawable/ic_qr_white"
+        android:title="@string/qr_checkin2" />
+</menu>
