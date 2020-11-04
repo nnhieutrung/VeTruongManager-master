@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:drawableRight="@drawable/ic_search"
         android:hint="Input order number"
-        android:inputType="text"
+        android:inputType="number"
         android:maxLines="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.508"
