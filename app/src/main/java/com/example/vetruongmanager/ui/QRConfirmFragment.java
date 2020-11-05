@@ -1,36 +1,16 @@
 package com.example.vetruongmanager.ui;
 
 import android.app.Activity;
-import android.content.Intent;
+
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
-import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
-import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
-import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.util.store.FileDataStoreFactory;
-import com.google.api.services.sheets.v4.Sheets;
-import com.google.api.services.sheets.v4.SheetsScopes;
-import com.google.api.services.sheets.v4.model.ValueRange;
-
-
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.security.GeneralSecurityException;
-import java.util.Collections;
-import java.util.List;
-
-//import androidx.annotation.NonNull;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -46,8 +27,18 @@ import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.example.vetruongmanager.R;
+import com.example.vetruongmanager.data.EditDataFromOrderNumber;
+import com.example.vetruongmanager.data.GetDataFromOrderNumber;
+
+import com.example.vetruongmanager.data.QrConfirm;
 import com.google.zxing.Result;
 
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.URL;
+import java.net.UnknownHostException;
 
 
 /**
@@ -57,7 +48,6 @@ import com.google.zxing.Result;
  */
 public class QRConfirmFragment extends Fragment {
 
-    private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -71,28 +61,12 @@ public class QRConfirmFragment extends Fragment {
     private EditText searchEditText;
     private Button editButton;
     private Button confirmButton;
+    private Button refundButton;
     private FrameLayout frameLayout;
     private CodeScanner mCodeScanner;
 
-    private static final String APPLICATION_NAME = "Về Trường Manager";
-    private static final String TOKENS_DIRECTORY_PATH = "https://accounts.google.com/o/oauth2/auth";
-
-    /**
-     * Global instance of the scopes required by this quickstart.
-     * If modifying these scopes, delete your previously saved tokens/ folder.
-     */
-    private static final List<String> SCOPES = Collections.singletonList(SheetsScopes.SPREADSHEETS_READONLY);
-    private static final String CREDENTIALS_FILE_PATH = @;
-
-
-
-    /**
-     * Creates an authorized Credential object.
-     * @param HTTP_TRANSPORT The network HTTP Transport.
-     * @return An authorized Credential object.
-     * @throws IOException If the credentials.json file cannot be found.
-     */
-
+    public  String ordernumber ;
+    public  String refund;
 
     public QRConfirmFragment() {
         // Required empty public constructor
@@ -141,8 +115,15 @@ public class QRConfirmFragment extends Fragment {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     // Perform action on key press
-                    Toast.makeText(activity, searchEditText.getText(), Toast.LENGTH_SHORT).show();
-                    searchData(activity, searchEditText.getText().toString());
+                    // Toast.makeText(activity, searchEditText.getText(), Toast.LENGTH_SHORT).show();
+                    try {
+
+                            refund = "false";
+                            searchData(activity, searchEditText.getText().toString());
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     return true;
                 }
                 return false;
@@ -150,17 +131,27 @@ public class QRConfirmFragment extends Fragment {
         });
         editButton = rootView.findViewById(R.id.button_edit);
         confirmButton = rootView.findViewById(R.id.button_confirm);
+        refundButton = rootView.findViewById(R.id.button_refund);
         frameLayout = rootView.findViewById(R.id.layout_qr_scanner);
+
+
+
+
 
         CodeScannerView scannerView = rootView.findViewById(R.id.scanner_view);
         mCodeScanner = new CodeScanner(activity, scannerView);
+
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
             @Override
             public void onDecoded(@NonNull final Result result) {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(activity, result.getText(), Toast.LENGTH_SHORT).show();
+                      // Toast.makeText(activity, result.getText(), Toast.LENGTH_SHORT).show();
+
+                       new QrConfirm(activity).execute(ordernumber , result.getText() , refund );
+
+
                     }
                 });
             }
@@ -171,8 +162,9 @@ public class QRConfirmFragment extends Fragment {
                 mCodeScanner.startPreview();
             }
         });
-        return  rootView;
+        return rootView;
     }
+
 
 
     @Override
@@ -185,19 +177,66 @@ public class QRConfirmFragment extends Fragment {
         super.onDestroy();
     }
 
-    public void confirmInfomation(View v){
+    public void confirmInfomation(View v) {
         frameLayout.setVisibility(View.VISIBLE);
     }
 
-    private void searchData(Activity activity, String order_number){
-        confirmButton.setEnabled(true);
-        confirmButton.setOnClickListener(new View.OnClickListener(){
+    private void searchData(Activity activity, String order_number) throws IOException {
+
+        editButton.setEnabled(false);
+        confirmButton.setEnabled(false);
+        refundButton.setEnabled(false);
+
+        EditText editName = activity.findViewById(R.id.edit_name);
+        EditText editClass = activity.findViewById(R.id.edit_class);
+        EditText editPhone = activity.findViewById(R.id.edit_phone);
+
+        editName.setText("");
+        editClass.setText("");
+        editPhone.setText("");
+        frameLayout.setVisibility(View.GONE);
+          new GetDataFromOrderNumber(activity).execute(order_number);
+
+
+
+
+
+        editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                confirmInfomation(v);
+                EditText editName = activity.findViewById(R.id.edit_name);
+                EditText editClass = activity.findViewById(R.id.edit_class);
+                EditText editPhone = activity.findViewById(R.id.edit_phone);
+  new EditDataFromOrderNumber(activity).execute( order_number , editName.getText().toString() , editClass.getText().toString() , editPhone.getText().toString() );
+
             }
         });
-        editButton.setEnabled(true);
+
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                    ordernumber = order_number;
+                    refund = "false";
+                    confirmInfomation(v);
+
+
+            }
+        });
+
+        refundButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                    ordernumber = order_number;
+                    refund = "true";
+                    confirmInfomation(v);
+
+            }
+        });
+
     }
 
+
 }
+

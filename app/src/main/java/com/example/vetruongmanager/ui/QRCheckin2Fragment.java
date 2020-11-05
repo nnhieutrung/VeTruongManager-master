@@ -16,7 +16,10 @@ import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.example.vetruongmanager.R;
+import com.example.vetruongmanager.data.QrCheckin;
 import com.google.zxing.Result;
+
+import java.net.InetAddress;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +64,7 @@ public class QRCheckin2Fragment extends Fragment {
         return fragment;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +90,8 @@ public class QRCheckin2Fragment extends Fragment {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(activity, result.getText(), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(activity, result.getText(), Toast.LENGTH_SHORT).show();
+                   new QrCheckin(activity).execute(result.getText() , "2" );
                     }
                 });
             }
