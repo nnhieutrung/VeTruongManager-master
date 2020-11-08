@@ -84,8 +84,41 @@ public class QrCheckin extends AsyncTask<String, Void, String> {
             JSONObject data = new JSONObject(result);
             String response = data.getString("response");
             String values = data.getString("values");
+
             Toast.makeText(activity,
                     values, Toast.LENGTH_LONG).show();
+            if (!response.equals("Error2"))
+            {
+                JSONObject info = data.getJSONObject("info");
+                String name = info.getString("name");
+                String lop = info.getString("lop");
+                String phone = info.getString("phone");
+
+                EditText Namecheck = activity.findViewById(R.id.namecheck);
+                EditText Classcheck = activity.findViewById(R.id.classcheck);
+                EditText Phonecheck = activity.findViewById(R.id.phonecheck);
+                EditText Statsuscheck = activity.findViewById(R.id.statuscheck);
+
+                Namecheck.setText(name);
+                Classcheck.setText(lop);
+                Phonecheck.setText(phone);
+                Statsuscheck.setText(values);
+
+                if (response.equals("OK"))
+                {
+                    Namecheck.setTextColor(0xff25DF08);
+                    Classcheck.setTextColor(0xff25DF08);
+                    Phonecheck.setTextColor(0xff25DF08);
+                    Statsuscheck.setTextColor(0xff25DF08);
+                }
+                else
+                {
+                    Namecheck.setTextColor(0xffff0000);
+                    Classcheck.setTextColor(0xffff0000);
+                    Phonecheck.setTextColor(0xffff0000);
+                    Statsuscheck.setTextColor(0xffff0000);
+                }
+            }
 
         } catch (JSONException e) {
             Toast.makeText(activity,

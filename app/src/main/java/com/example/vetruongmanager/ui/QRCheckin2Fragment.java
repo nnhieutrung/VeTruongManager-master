@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 
@@ -91,6 +92,15 @@ public class QRCheckin2Fragment extends Fragment {
                     @Override
                     public void run() {
                        // Toast.makeText(activity, result.getText(), Toast.LENGTH_SHORT).show();
+                        EditText Namecheck = activity.findViewById(R.id.namecheck);
+                        EditText Classcheck = activity.findViewById(R.id.classcheck);
+                        EditText Phonecheck = activity.findViewById(R.id.phonecheck);
+                        EditText Statsuscheck = activity.findViewById(R.id.statuscheck);
+
+                        Namecheck.setText("");
+                        Classcheck.setText("");
+                        Phonecheck.setText("");
+                        Statsuscheck.setText("");
                    new QrCheckin(activity).execute(result.getText() , "2" );
                     }
                 });
