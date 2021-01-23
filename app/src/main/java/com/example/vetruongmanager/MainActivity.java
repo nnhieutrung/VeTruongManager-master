@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.example.vetruongmanager.ui.QRCheckin1Fragment;
 import com.example.vetruongmanager.ui.QRCheckin2Fragment;
-import com.example.vetruongmanager.ui.QRConfirmFragment;
+import com.example.vetruongmanager.ui.QRChangeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        loadFragment(new QRConfirmFragment());
+        loadFragment(new QRChangeFragment());
         fragmentManager = getSupportFragmentManager();
     }
 
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             Fragment fragment;
             switch (item.getItemId()) {
                 case R.id.qr_confirm:
-                    fragment = new QRConfirmFragment();
+                    fragment = new QRChangeFragment();
                     loadFragment(fragment);
                     return true;
                 case R.id.qr_checkin1:

@@ -2,15 +2,11 @@ package com.example.vetruongmanager.ui;
 
 import android.app.Activity;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.widget.ImageView;
 
 
 import com.budiyev.android.codescanner.CodeScanner;
@@ -30,23 +24,19 @@ import com.example.vetruongmanager.R;
 import com.example.vetruongmanager.data.EditDataFromOrderNumber;
 import com.example.vetruongmanager.data.GetDataFromOrderNumber;
 
-import com.example.vetruongmanager.data.QrConfirm;
+import com.example.vetruongmanager.data.QrChange;
 import com.google.zxing.Result;
 
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.InetAddress;
-import java.net.URL;
-import java.net.UnknownHostException;
 
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link QRConfirmFragment#newInstance} factory method to
+ * Use the {@link QRChangeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class QRConfirmFragment extends Fragment {
+public class QRChangeFragment extends Fragment {
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -60,15 +50,14 @@ public class QRConfirmFragment extends Fragment {
 
     private EditText searchEditText;
     private Button editButton;
-    private Button confirmButton;
-    private Button refundButton;
+    private Button changeButton;
     private FrameLayout frameLayout;
     private CodeScanner mCodeScanner;
+    private ImageView searchEditTextButton;
 
     public  String ordernumber ;
-    public  String refund;
 
-    public QRConfirmFragment() {
+    public QRChangeFragment() {
         // Required empty public constructor
 
     }
@@ -82,8 +71,8 @@ public class QRConfirmFragment extends Fragment {
      * @return A new instance of fragment TicketListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static QRConfirmFragment newInstance(String param1, String param2) {
-        QRConfirmFragment fragment = new QRConfirmFragment();
+    public static QRChangeFragment newInstance(String param1, String param2) {
+        QRChangeFragment fragment = new QRChangeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -107,7 +96,7 @@ public class QRConfirmFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final Activity activity = getActivity();
-        View rootView = inflater.inflate(R.layout.fragment_qr_confirm, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_qr_change, container, false);
         searchEditText = rootView.findViewById(R.id.edit_text_order_number);
         searchEditText.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -118,7 +107,6 @@ public class QRConfirmFragment extends Fragment {
                     // Toast.makeText(activity, searchEditText.getText(), Toast.LENGTH_SHORT).show();
                     try {
 
-                            refund = "false";
                             searchData(activity, searchEditText.getText().toString());
 
                     } catch (IOException e) {
@@ -129,9 +117,24 @@ public class QRConfirmFragment extends Fragment {
                 return false;
             }
         });
+
+        searchEditTextButton = rootView.findViewById(R.id.edit_text_order_number_button);
+        searchEditTextButton.setClickable(true);
+        searchEditTextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+
+                    searchData(activity, searchEditText.getText().toString());
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         editButton = rootView.findViewById(R.id.button_edit);
-        confirmButton = rootView.findViewById(R.id.button_confirm);
-        refundButton = rootView.findViewById(R.id.button_refund);
+        changeButton = rootView.findViewById(R.id.button_change);
         frameLayout = rootView.findViewById(R.id.layout_qr_scanner);
 
 
@@ -149,7 +152,7 @@ public class QRConfirmFragment extends Fragment {
                     public void run() {
                       // Toast.makeText(activity, result.getText(), Toast.LENGTH_SHORT).show();
 
-                       new QrConfirm(activity).execute(ordernumber , result.getText() , refund );
+                       new QrChange(activity).execute(ordernumber , result.getText() );
 
 
                     }
@@ -184,8 +187,7 @@ public class QRConfirmFragment extends Fragment {
     private void searchData(Activity activity, String order_number) throws IOException {
 
         editButton.setEnabled(false);
-        confirmButton.setEnabled(false);
-        refundButton.setEnabled(false);
+        changeButton.setEnabled(false);
 
         EditText editName = activity.findViewById(R.id.edit_name);
         EditText editClass = activity.findViewById(R.id.edit_class);
@@ -212,28 +214,15 @@ public class QRConfirmFragment extends Fragment {
             }
         });
 
-        confirmButton.setOnClickListener(new View.OnClickListener() {
+        changeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                     ordernumber = order_number;
-                    refund = "false";
                     confirmInfomation(v);
-
-
             }
         });
 
-        refundButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                    ordernumber = order_number;
-                    refund = "true";
-                    confirmInfomation(v);
-
-            }
-        });
 
     }
 

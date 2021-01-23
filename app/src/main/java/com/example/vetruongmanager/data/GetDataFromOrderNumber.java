@@ -24,13 +24,9 @@ public class GetDataFromOrderNumber extends AsyncTask<String, Void, String> {
     private Activity activity;
     private ProgressDialog loading;
 
-
-
     public GetDataFromOrderNumber(Activity activity){
-
             this.activity = activity;
             loading = new ProgressDialog(activity);
-
     }
 
 
@@ -43,21 +39,17 @@ public class GetDataFromOrderNumber extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... params){
 
         String order_number = params[0];
-        String stringUrl = "https://script.google.com/macros/s/AKfycbwX3LGV7oTZTi4QiTA7DoFp9ZfDKC0qe6U7gTbWanb9XqT0yz4/exec?stt=" + order_number;
+        String stringUrl = "https://script.google.com/macros/s/AKfycbxfcBIR4OOJbzPxFgT_g0e4Sma9Dcy_LOWfF83kP6zfo9NQYicQLHsC/exec?stt=" + order_number;
         StringBuilder content = new StringBuilder();
         try
         {
             // create a url object
             URL url = new URL(stringUrl);
-
             // create a urlconnection object
             URLConnection urlConnection = url.openConnection();
-
             // wrap the urlconnection in a bufferedreader
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-
             String line;
-
             // read from the urlconnection via the bufferedreader
             while ((line = bufferedReader.readLine()) != null)
             {
@@ -68,7 +60,6 @@ public class GetDataFromOrderNumber extends AsyncTask<String, Void, String> {
         catch(Exception e)
         {
             e.printStackTrace();
-
         }
         return content.toString();
     }
@@ -85,9 +76,9 @@ public class GetDataFromOrderNumber extends AsyncTask<String, Void, String> {
         EditText editClass = activity.findViewById(R.id.edit_class);
         EditText editPhone = activity.findViewById(R.id.edit_phone);
 
-        Button   editButton = activity.findViewById(R.id.button_edit);
-        Button confirmButton = activity.findViewById(R.id.button_confirm);
-        Button refundButton = activity.findViewById(R.id.button_refund);
+        Button   editButton  = activity.findViewById(R.id.button_edit);
+        Button changeButton  = activity.findViewById(R.id.button_change);
+
 
         try {
             JSONObject data = new JSONObject(result);
@@ -118,8 +109,7 @@ public class GetDataFromOrderNumber extends AsyncTask<String, Void, String> {
                 editPhone.setEnabled(true);
 
                 editButton.setEnabled(true);
-                confirmButton.setEnabled(true);
-                refundButton.setEnabled(true);
+                changeButton.setEnabled(true);
             }
             else
             {
@@ -139,8 +129,7 @@ public class GetDataFromOrderNumber extends AsyncTask<String, Void, String> {
                 editPhone.setEnabled(false);
 
                 editButton.setEnabled(false);
-                confirmButton.setEnabled(false);
-                refundButton.setEnabled(false);
+                changeButton.setEnabled(false);
             }
 
         } catch (JSONException e) {
@@ -154,8 +143,7 @@ public class GetDataFromOrderNumber extends AsyncTask<String, Void, String> {
 
 
             editButton.setEnabled(false);
-            confirmButton.setEnabled(false);
-            refundButton.setEnabled(false);
+            changeButton.setEnabled(false);
         }
 
 

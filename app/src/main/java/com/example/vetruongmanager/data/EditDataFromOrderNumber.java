@@ -43,7 +43,7 @@ public class EditDataFromOrderNumber extends AsyncTask<String, Void, String> {
         String name= params[1];
         String lop = params[2];
         String phone = params[3];
-        String stringUrl = "https://script.google.com/macros/s/AKfycbzBZLXvA8_UQ40y2zGJeO6XZ5MFfeM_UhUH7GI7q1fLVuKtSasS/exec?stt=" + ordernumber + "&name=" + name + "&lop="+ lop + "&phone=" + phone;
+        String stringUrl = "https://script.google.com/macros/s/AKfycbypV2E04FdfBKgWMw2KDLqE6d9B-ZOlDy7EdZpMmTb7GYMmhftysEW_1w/exec?stt=" + ordernumber + "&name=" + name + "&lop="+ lop + "&phone=" + phone;
         StringBuilder content = new StringBuilder();
         try
         {

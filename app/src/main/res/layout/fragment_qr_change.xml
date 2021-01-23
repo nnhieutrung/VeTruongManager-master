@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    tools:context="com.example.vetruongmanager.ui.QRConfirmFragment">
+    tools:context="com.example.vetruongmanager.ui.QRChangeFragment">
 
 
     <TextView
@@ -20,25 +20,45 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/edit_text_order_number"
+    <RelativeLayout
+        android:id="@+id/edit_text_order_number_layout"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:drawableRight="@drawable/ic_search"
-        android:hint="Nhập Số Thứ Tự"
-        android:inputType="number"
-        android:maxLines="1"
+        app:layout_constraintTop_toBottomOf="@id/qr_confirm_title"
+        android:background="@android:drawable/edit_text"
+        android:padding="5dip"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.508"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/qr_confirm_title" />
+        app:layout_constraintStart_toStartOf="parent">
+
+        <EditText
+            android:id="@+id/edit_text_order_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập Số Thứ Tự"
+            android:textSize="20sp"
+            android:inputType="number"
+            android:maxLines="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.508"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <ImageView
+            android:id="@+id/edit_text_order_number_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_search" />
+    </RelativeLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_text_order_number">
+        app:layout_constraintTop_toBottomOf="@id/edit_text_order_number_layout">
 
         <TextView
             android:id="@+id/text_view_name"
@@ -150,27 +170,17 @@
             android:layout_marginRight="30dp"
             android:enabled="false"
             android:text="Edit"
-            app:layout_constraintEnd_toStartOf="@id/button_confirm"
+            app:layout_constraintEnd_toStartOf="@id/button_change"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/button_confirm"
+            android:id="@+id/button_change"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:enabled="false"
-            android:layout_marginRight="30dp"
-            android:text="Confirm"
-            app:layout_constraintEnd_toEndOf="@id/button_refund"
-            app:layout_constraintStart_toEndOf="@id/button_edit" />
-
-        <Button
-            android:id="@+id/button_refund"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:text="Refund"
+            android:text="Change"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/button_confirm" />
+            app:layout_constraintStart_toEndOf="@id/button_edit" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

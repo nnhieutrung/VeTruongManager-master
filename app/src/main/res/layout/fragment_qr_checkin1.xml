@@ -21,12 +21,46 @@
         app:layout_constraintTop_toTopOf="parent" />
 
    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_namecheck"
+        android:id="@+id/layout_ticketidcheck"
         android:layout_width="wrap_content"
        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/frameLayout"
-        android:layout_marginTop="40dp">
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/tickedidtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:text="TicketID:"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/tickedidcheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:enabled="false"
+            android:maxLines="1"
+
+
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tickedidtitle"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_namecheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_ticketidcheck">
 
         <TextView
             android:id="@+id/nametitle"
@@ -56,6 +90,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_classcheck"
         android:layout_width="wrap_content"
@@ -68,7 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:text="Class: "
+            android:text="Study: "
             android:textColor="@android:color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"

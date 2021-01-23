@@ -22,13 +22,13 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class QrConfirm extends AsyncTask<String, Void, String> {
+public class QrChange extends AsyncTask<String, Void, String> {
     private Activity activity;
     private ProgressDialog loading;
 
 
 
-    public QrConfirm(Activity activity){
+    public QrChange(Activity activity){
 
             this.activity = activity;
             loading = new ProgressDialog(activity);
@@ -36,7 +36,7 @@ public class QrConfirm extends AsyncTask<String, Void, String> {
 
 
     protected void onPreExecute() {
-        this.loading.setMessage("Confirm...");
+        this.loading.setMessage("Change...");
         this.loading.show();
     }
 
@@ -48,8 +48,7 @@ public class QrConfirm extends AsyncTask<String, Void, String> {
 
         String ordernumber = params[0];
         String ticketid = params[1];
-        String refund = params[2];
-        String stringUrl = "https://script.google.com/macros/s/AKfycbz6mqu4_1ZqUFQlNzTPKqRQqS-b0xPohGk29vH_4XviZu-9iVay/exec?stt=" + ordernumber + "&ticketid=" + ticketid + "&refund=" + refund;
+        String stringUrl = "https://script.google.com/macros/s/AKfycbyRYGCgiLXDRWXPit6G8p8hSI-DPyTQOTZHh_METF7jp5ZD2_pH_3Dqgg/exec?stt=" + ordernumber + "&ticketid=" + ticketid ;
         StringBuilder content = new StringBuilder();
 
 
@@ -102,8 +101,7 @@ public class QrConfirm extends AsyncTask<String, Void, String> {
             EditText editPhone = activity.findViewById(R.id.edit_phone);
 
             Button   editButton = activity.findViewById(R.id.button_edit);
-            Button confirmButton = activity.findViewById(R.id.button_confirm);
-            Button refundButton = activity.findViewById(R.id.button_refund);
+            Button changeButton = activity.findViewById(R.id.button_change);
             FrameLayout frameLayout = activity.findViewById(R.id.layout_qr_scanner);
 
          if (response.equals("OK"))
@@ -118,8 +116,7 @@ public class QrConfirm extends AsyncTask<String, Void, String> {
                 editPhone.setEnabled(false);
 
                 editButton.setEnabled(false);
-                confirmButton.setEnabled(false);
-                refundButton.setEnabled(false);
+                changeButton.setEnabled(false);
                 frameLayout.setVisibility(View.GONE);
 
             }
